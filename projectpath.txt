@@ -1,0 +1,26 @@
+
+ascii-art-web
+├── README.md
+├── ascii-art
+│   ├── AsciiArt.go
+│   └── artstyles
+│       ├── shadow.txt
+│       ├── standard.txt
+│       └── thinkertoy.txt
+├── go.mod
+├── handlers
+│   └── handlers.go
+├── main.go
+├── server
+│   └── server.go
+├── static
+│   ├── script.js
+│   └── style.css
+├── templates
+│   ├── errors
+│   │   ├── 404.html
+│   │   └── 500.html
+│   ├── index.html
+│   └── layout.html
+└── tests
+    └── main_test.go

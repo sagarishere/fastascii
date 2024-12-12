@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ASCII Art Submission</title>
+    <link
+      rel="icon"
+      href="static/images/small.png"
+      type="image/png"
+      sizes="16x16"
+    />
     <script src="https://cdn.jsdelivr.net/npm/shadcn-ui@0.9.3/+esm"></script>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
@@ -59,7 +65,7 @@
 
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="w-full bg-purple-500 text-black font-bold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Submit
         </button>
@@ -71,11 +77,17 @@
       id="responseContainer"
       class="w-full bg-gray-200 p-4 rounded-lg shadow-md"
     >
-      <h2 class="text-xl font-bold mb-2">Response</h2>
-      <pre
-        id="responseContent"
-        class="whitespace-pre-wrap text-gray-800 bg-white p-4 rounded-lg shadow-inner"
-      ></pre>
+      <h2
+        class="text-xl font-bold mb-2 text-center bg-gray-800 text-white p-4 rounded-lg"
+      >
+        Result
+      </h2>
+      <div class="overflow-auto">
+        <pre
+          id="responseContent"
+          class="whitespace-pre text-gray-800 bg-white p-4 rounded-lg shadow-inner h-64 max-h-[50vh] overflow-x-auto"
+        ></pre>
+      </div>
     </div>
 
     <script>

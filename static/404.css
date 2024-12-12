@@ -49,3 +49,49 @@
     justify-content: center;
     align-items: center;
   }
+body {
+  background-image: url('/static/images/background.png'); /* Path to your image */
+  background-size: cover; /* Ensures the background image covers the entire area */
+  background-position: center; /* Centers the image within the viewport */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  min-height: 100vh; /* Ensures the body takes up the full height of the screen */
+  display: flex;
+  justify-content: center; /* Centers the content horizontally */
+  align-items: flex-start; /* Keeps the content aligned to the top */
+  color: #d69710; /* Text color */
+  padding-top: 8px; /* Adds space from the top */
+  margin: 0; /* Removes default margin */
+  overflow: hidden; /* Prevents scrollbars */
+}
+
+
+.error-message {
+  text-align: center;
+  width: 100%;
+}
+
+p {
+  font-size: 1.5em;
+  margin-top: 20px; /* You can adjust this value for further fine-tuning */
+  color: rgb(220, 13, 13); /* Initial color */
+  animation: change_colors 6s infinite; /* Apply the color animation */
+  font-weight: bold;
+  font-family: 'Helvetica', sans-serif;
+  text-shadow: 
+      0 .005em 0 rgba(0, 0, 0, .2),
+      0 .005em 0 currentColor,
+      0 .01em 0 rgba(0, 0, 0, .25),
+      0 .01em 0 currentColor; /* Same text-shadow effect as .hit-the-floor */
+}
+
+@keyframes change_colors {
+  0% { color: #f39c12; } /* Golden yellow */
+  12% { color: #e74c3c; } /* Red */
+  25% { color: #8e44ad; } /* Purple */
+  37% { color: #2980b9; } /* Blue */
+  50% { color: #27ae60; } /* Green */
+  62% { color: #d35400; } /* Orange */
+  75% { color: #2c3e50; } /* Dark blue-grey */
+  87% { color: #f1c40f; } /* Yellow */
+  100% { color: #16a085; } /* Teal */
+}

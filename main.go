@@ -11,14 +11,14 @@ import (
 )
 
 var myMap map[rune][8]string
-var readyForPrint string
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+
 	http.HandleFunc("POST /ascii", Ascii)
 	http.HandleFunc("GET /ascii", AsciiMethodNotAllowed) // 405
 	http.HandleFunc("/", Home)
-	fmt.Println("Listening on port 8080... \033[34mhttp://localhost:8080/\033[0m")
+	fmt.Println("Listening on port 8080... http://localhost:8080/")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -39,36 +39,57 @@ func Home(w http.ResponseWriter, r *http.Request) {
 func Ascii(w http.ResponseWriter, r *http.Request) {
 	body, _ := io.ReadAll(r.Body)
 	defer r.Body.Close()
+	fmt.Println("raw body: ", string(body))
 
 	incoming := myStruct{}
 	err := json.Unmarshal(body, &incoming)
 	if err != nil {
 		fmt.Printf("\033[31mUnmarshal error: %v\033[0m\n", err)
-		w.WriteHeader(http.StatusBadRequest) // 400
+		// Handle 400 Bad Request
+		w.WriteHeader(http.StatusBadRequest)
+		w.Header().Set("Content-Type", "text/html") // Make sure the content type is set
+		http.ServeFile(w, r, "./templates/400/400.html")
 		return
 	}
 
 	// check if the struct is valid
 	if incoming.TypeOfAscii == "" || incoming.MakeAscii == "" {
-		w.WriteHeader(http.StatusBadRequest) // 400
+		// Handle 400 Bad Request
+		w.WriteHeader(http.StatusBadRequest)
+		w.Header().Set("Content-Type", "text/html")
+		http.ServeFile(w, r, "./templates/400/400.html")
 		return
 	}
 
 	if incoming.TypeOfAscii != "standard" && incoming.TypeOfAscii != "shadow" && incoming.TypeOfAscii != "thinkertoy" {
-		w.WriteHeader(http.StatusNotFound) // 404
+		// Handle 404 Not Found
+		w.WriteHeader(http.StatusNotFound)
+		http.ServeFile(w, r, "./templates/404/404.html")
 		return
 	}
 
 	w.Header().Set("Content-Type", "text/plain")
 	if !checkValidChars(incoming.MakeAscii) {
-		incoming.MakeAscii = "Invalid characters"
+		incoming.MakeAscii = ""
 	}
-	asciiResponse, err := giveAsccii(incoming.MakeAscii, incoming.TypeOfAscii)
+	asciiResponse, err := giveAscii(incoming.MakeAscii, incoming.TypeOfAscii)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError) // 500
+		// Handle 500 Internal Server Error
+		w.WriteHeader(http.StatusInternalServerError)
+		http.ServeFile(w, r, "./templates/500/500.html")
 		return
 	}
-	jsonResponse, _ := json.Marshal(asciiResponse) // convert asciiResponse to json
+
+	// convert asciiResponse to json
+	jsonResponse, err := json.Marshal(asciiResponse)
+	if err != nil {
+		// Handle 500 Internal Server Error
+		w.WriteHeader(http.StatusInternalServerError)
+		http.ServeFile(w, r, "./templates/500/500.html")
+		return
+	}
+
+	// Send the final response
 	fmt.Fprintf(w, string(jsonResponse))
 }
 
@@ -86,7 +107,7 @@ type myStruct struct {
 	MakeAscii   string `json:"text"`
 }
 
-func giveAsccii(myArgs, typeOfAscii string) (string, error) {
+func giveAscii(myArgs, typeOfAscii string) (string, error) {
 	mybytes, err := os.ReadFile(typeOfAscii + ".txt")
 	if err != nil {
 		return "", err

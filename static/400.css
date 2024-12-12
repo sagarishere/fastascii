@@ -1,0 +1,23 @@
+.badreq {
+    font-size: 100px;
+    font-weight: bold;
+    color: #721c24;
+}
+
+p {
+    color: #721c24;
+    font-size: 24px;
+}
+
+.error-message {
+    font-size: 20px; /* Smaller font for the additional message */
+    color: #721c24;
+    margin-top: 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f8d7da;
+    padding: 50px;
+}
